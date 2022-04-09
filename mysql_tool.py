@@ -6,10 +6,9 @@ from DBUtils.PersistentDB import PersistentDB
 def db_config():
     db_dict = {
                 'MySql_IP': '127.0.0.1',
-                # 'MySql_IP': '85.209.158.248',
                 'MySql_Port': 3306,
                 'MySql_account': 'root',
-                'MySql_password': '12ds4@$#%fdsf',
+                'MySql_password': '',
                 'MySql_db_name': 'crawler_article'
                 }
 
