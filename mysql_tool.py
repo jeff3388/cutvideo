@@ -7,7 +7,7 @@ def db_config():
     db_dict = {
                 'MySql_IP': '127.0.0.1',
                 'MySql_Port': 3306,
-                'MySql_account': 'root',
+                'MySql_account': '',
                 'MySql_password': '',
                 'MySql_db_name': 'crawler_article'
                 }
