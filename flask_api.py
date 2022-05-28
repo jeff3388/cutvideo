@@ -22,14 +22,13 @@ def fetch_article():
     Pool = db_config()
     data = list(select_data(Pool))
 
-    Id_ls = list(map(lambda x: x[0], data))
+    Id_ls = list(map(lambda x: (x[0]), data))
     title_ls = list(map(lambda x: x[1], data))
     content_ls = list(map(lambda x: x[2], data))
 
     result_json = [{'title': title, 'content': content} for title, content in zip(title_ls, content_ls)]
 
-    for Id in Id_ls:
-        update_data(Pool, Id)
+    update_data(Pool, Id_ls)
 
     return jsonify({"result": result_json, "s": "1"})
 

@@ -5,10 +5,10 @@ from DBUtils.PersistentDB import PersistentDB
 ## MySQL 連線設定 ##
 def db_config():
     db_dict = {
-                'MySql_IP': '127.0.0.1',
+                'MySql_IP': '85.209.158.248',
                 'MySql_Port': 3306,
-                'MySql_account': '',
-                'MySql_password': '',
+                'MySql_account': 'root',
+                'MySql_password': '12ds4@$#%fdsf',
                 'MySql_db_name': 'crawler_article'
                 }
 
@@ -49,20 +49,29 @@ def select_data(POOL):
         conn.rollback()
 
 
-def update_data(POOL, Id):
+def update_data(POOL, Id=None):
     conn = POOL.connection(shareable=False)
     cursor = conn.cursor()
     SQL = '''
             UPDATE article
             SET `state` = 1
-            WHERE `id`= "{}"
-            LIMIT 1
+            WHERE `id`= (%s)
     '''
+
+    # SQL = '''
+    #             UPDATE article
+    #             SET `state` = 0
+    #             WHERE `state`= 1
+    #     '''
 
     try:
         with conn:
-            execute_sql = SQL.format(Id)
-            cursor.execute(execute_sql)
+            cursor.executemany(SQL, Id)
+            # cursor.execute(SQL)
     except Exception as e:
         print(e)
         conn.rollback()
+
+if __name__ == '__main__':
+    Pool = db_config()
+    update_data(Pool)
