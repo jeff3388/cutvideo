@@ -67,7 +67,8 @@ def article():
     if 'username' in session:
         if request.method == 'POST':
             title = request.values.get('title')
-            text_area = request.values.get('text_area')
+            content = request.values.get('text_area')
+            db.insert_article(title, content)
 
             return render_template('article.html')
         else:
@@ -80,9 +81,10 @@ def article_list():
     if 'username' in session:
 
         content_ls = []
-        for i in range(5):
-            title = f'title{str(i)}'
-            content = f'content{str(i)}'
+        result_ls = db.select_latest_article()
+        for result in result_ls:
+            title = result.get('title')
+            content = result.get('content')
 
             content_ls += [{'title': title, 'content': content}]
 
@@ -102,7 +104,7 @@ def add_account():
 
         result = db.select_user_info(username)
         if bool(result) is False:
-            db.insert_data(username, password)
+            db.insert_user_info(username, password)
             return render_template('add_account.html', result='創建成功')
         else:
             return render_template('add_account.html', result='帳號已存在')
@@ -113,7 +115,7 @@ def add_account():
 
 @app.route('/status', methods=['GET', 'POST'])
 def status():
-    if 'name' in session:
+    if 'username' in session:
         # 從 DB 獲取文章狀態
         done_quantity = "1"
         pending_quantity = "39"
