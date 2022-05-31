@@ -7,7 +7,7 @@ def daily_job_A():
 
 if __name__ == "__main__":
     scheduler = AsyncIOScheduler()  # 異步非阻塞式
-    scheduler.add_job(daily_job_A, 'interval', minutes=3)
+    scheduler.add_job(daily_job_A, 'interval', minutes=1)
 
     scheduler.start()
 

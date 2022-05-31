@@ -49,5 +49,3 @@ def main():
         result = db.crawler_select_article(md_key)
         if bool(result) is False:
             db.insert_article(title, content)
-
-
