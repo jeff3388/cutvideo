@@ -84,7 +84,7 @@ class sqlTool:
 
     @beartype
     def insert_article(self, title: str, content: str):
-        md5_key = self.md5(content)
+        md5_key = self.md5(title + content)
         self.open_article_connection()
         df = pd.DataFrame({'title': [title],
                            'content': [content],
@@ -106,6 +106,25 @@ class sqlTool:
         LIMIT 10
         '''
         sql = sql.format(self.article_table, state)
+        self.open_article_connection()
+
+        df = pd.read_sql(sql, self.conn.get(self.article_table))
+        df_dict = df.to_dict('records')
+
+        # self.close_connection()
+
+        return df_dict
+
+    @beartype
+    def crawler_select_article(self, md5_key: str):
+
+        sql = '''
+        SELECT * 
+        FROM {}
+        WHERE `md5_key` = "{}"
+        LIMIT 10
+        '''
+        sql = sql.format(self.article_table, md5_key)
         self.open_article_connection()
 
         df = pd.read_sql(sql, self.conn.get(self.article_table))
@@ -190,5 +209,3 @@ if __name__ == '__main__':
     DB.open_article_connection()
     df_dict = DB.select_article(state='0')
     # DB.insert_article(title, content)
-
-    print(df_dict)

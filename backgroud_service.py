@@ -1,4 +1,4 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template
 from flask import request, session, redirect, url_for
 from datetime import timedelta
 from module.sqlite import sqlTool
@@ -11,6 +11,36 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=10)
 
+admit_ls = []
+
+success_alert_content = """    
+  <div style="text-align:center; color:green ;">
+    <h3>創建成功</h3>
+    </div>
+"""
+
+fail_alert_content = """
+  <div style="text-align:center; color:red ;">
+    <h3>創建失敗</h3>
+    </div>
+"""
+
+
+article_ls = """
+<div class="card shadow mb-4" style="width:800px">
+        <!-- Card Header - Accordion -->
+        <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" data-target="#collapse{}"
+            role="button" aria-expanded="true" aria-controls="collapseCardExample">
+            <h6 class="m-0 font-weight-bold text-primary">{}</h6>
+        </a>
+        <!-- Card Content - Collapse -->
+        <div class="collapse show" id="collapse{}">
+            <div class="card-body">
+                {}
+            </div>
+        </div>
+</div>
+"""
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -33,7 +63,11 @@ def login():
                 err = '帳號密碼錯誤'
                 return render_template('login_error.html', err=err)
 
-        return redirect(url_for('article'))
+        # 最高管理權限顯示此頁面
+        elif username in admit_ls:
+            return render_template('admit_article.html')
+
+        return render_template('article.html', user=username)
     else:
         return render_template('login.html')
 
@@ -82,13 +116,23 @@ def article_list():
 
         content_ls = []
         result_ls = db.select_latest_article()
-        for result in result_ls:
+        for i, result in enumerate(result_ls):
             title = result.get('title')
             content = result.get('content')
 
-            content_ls += [{'title': title, 'content': content}]
+            article_html_ls = article_ls.format(str(i), title, str(i), content)
+            content_ls += [article_html_ls]
 
-        return render_template('article_list.html', content_ls=content_ls)
+        return render_template('article_list.html', article_list="\n".join(content_ls))
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/table', methods=['GET', 'POST'])
+def table():
+    if 'username' in session:
+
+        return render_template('table.html')
     else:
         return redirect(url_for('login'))
 
@@ -105,9 +149,9 @@ def add_account():
         result = db.select_user_info(username)
         if bool(result) is False:
             db.insert_user_info(username, password)
-            return render_template('add_account.html', result='創建成功')
+            return render_template('add_account.html', result=success_alert_content)
         else:
-            return render_template('add_account.html', result='帳號已存在')
+            return render_template('add_account.html', result=fail_alert_content)
 
     else:
         return redirect(url_for('login'))
@@ -131,4 +175,4 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(host='0.0.0.0', debug=True, port=5000)
