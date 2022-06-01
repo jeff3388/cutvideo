@@ -140,10 +140,10 @@ class sqlTool:
         sql = '''
         SELECT * 
         FROM {}
-        WHERE `create_time` < '{}'
+        WHERE state = "0"
         LIMIT 10
         '''
-        sql = sql.format(self.article_table, today_time())
+        sql = sql.format(self.article_table)
         self.open_article_connection()
 
         df = pd.read_sql(sql, self.conn.get(self.article_table))
@@ -157,13 +157,25 @@ class sqlTool:
     def update_article_state(self, state: str, md5_key: str):
         sql = '''
         UPDATE {}
-        SET state = {}
-        WHERE md5_key = "{}"
+        SET `state` = "{}"
+        WHERE `md5_key` = "{}"
         '''
-        sql = sql.format(self.user_info, state, md5_key)
+        sql = sql.format(self.article_table, state, md5_key)
         self.open_article_connection()
-        self.cur.get(self.user_info).execute(sql)
-        self.conn.get(self.user_info).commit()
+        self.cur.get(self.article_table).execute(sql)
+        self.conn.get(self.article_table).commit()
+
+    @beartype
+    def update_all_article_state(self):
+        sql = '''
+        UPDATE {}
+        SET `state` = "0"
+        WHERE `state` = "1"
+        '''
+        sql = sql.format(self.article_table)
+        self.open_article_connection()
+        self.cur.get(self.article_table).execute(sql)
+        self.conn.get(self.article_table).commit()
 
     @beartype
     def select_user_info(self, username: str):
