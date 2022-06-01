@@ -22,3 +22,6 @@ def article_list_json():
         article_ls += [{"title": title, "content": content}]
 
     return jsonify({"result": article_ls})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True, port=5501)

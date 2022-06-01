@@ -90,10 +90,6 @@ def index():
         return redirect(url_for('login'))
 
 
-@app.route('/')
-@app.route('/404')
-def not_found():
-    return render_template('404.html')
 
 
 @app.route('/article', methods=['GET', 'POST'])
