@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask import request, session, redirect, url_for
 from datetime import timedelta
 from module.sqlite import sqlTool
@@ -172,6 +172,7 @@ def status():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
 
 
 if __name__ == '__main__':
