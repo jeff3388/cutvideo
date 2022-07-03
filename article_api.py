@@ -23,9 +23,9 @@ def article_list_json():
     if auth != '7b354b2f9429e2b92ca5b8c0d12e22ef':
         return jsonify({"result": "abort your request"})
 
-    try:
+    if len(q):
         result = q.pop()
-    except:
+    else:
         result = {}
 
     return jsonify({"result": result})

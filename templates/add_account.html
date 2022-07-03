@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">創建使用者帳號密碼</h1>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+
+
+                                 <!-- 搜尋按鈕 -->
+                                <form class="user" method='post' action="{{ url_for('add_account') }}">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                   name="username"
+                                                id="InputUsername" placeholder="使用者帳號">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control form-control-user"
+                                                   name="password"
+                                                id="InputPassword" placeholder="使用者密碼">
+                                        </div>
+
+                                        <button type='submit' class="btn btn-primary btn-user btn-block">submit</button>
+                                    </form>
+
+                                    <br>
+                                    <br>
+                                    <div style="text-align:center; color:red ;">
+                                        <h3>{{ result }}</h3>
+                                    </div>
+
+                            <!-- Collapsable Card Example -->
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+
+{% endblock %}

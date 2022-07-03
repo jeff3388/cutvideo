@@ -165,6 +165,13 @@ def status():
         return redirect(url_for('login'))
 
 
+@app.route('/update_all_article_state', methods=['POST'])
+def update_all_article_state():
+    db.update_all_article_state()
+
+    return jsonify({"result": "already reset all article"})
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404

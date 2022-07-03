@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block content %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">請輸入抖音文章內容</h1>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+
+
+                                <!-- 搜尋按鈕 -->
+<!--                                <form class="user" method='post' action="/article">-->
+<!--                                        <div class="form-group">-->
+<!--                                            <input type="text" class="form-control form-control-user"-->
+<!--                                                   name="username"-->
+<!--                                                id="exampleInputEmail" placeholder="Enter Account">-->
+<!--                                        </div>-->
+<!--                                        <div class="form-group">-->
+<!--                                            <input type="text" class="form-control form-control-user"-->
+<!--                                                   name="password"-->
+<!--                                                id="exampleInputPassword" placeholder="Password">-->
+<!--                                        </div>-->
+
+<!--                                        <button type='submit' class="btn btn-primary btn-user btn-block">submit</button>-->
+<!--                                    </form>-->
+
+<!--                                    <br>--><!-- Sidebar Toggler (Sidebar) -->
+
+                                <form class="user" action="{{ url_for('article') }}" method="post">
+                                    <!-- 文章標題 -->
+                                    <div class="form-group">
+                                            <input type="text" class="form-control form-control-user2"
+                                                   name="title"
+                                                id="" placeholder="title">
+                                    </div>
+                                    <!-- 文章內容匡 -->
+                                    <div class="form-group">
+                                        <textarea name="text_area" style="font-size:15px;width:100%" rows="5"></textarea>
+
+                                    </div>
+                                        <button type='submit' class="btn btn-primary btn-user btn-block">submit</button>
+                                </form>
+                                    <br>
+<!--                                搜尋文章狀態-->
+                                <a href="status" class="btn btn-primary btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-flag"></i>
+                                        </span>
+                                        <span class="text">查看任務狀態</span>
+                                </a>
+
+                                <a href="#" class="btn btn-success btn-icon-split">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text">完成 {{ done_quantity }} 篇</span>
+                                </a>
+
+                               <a href="#" class="btn btn-warning btn-icon-split">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </span>
+                                    <span class="text">處理中 {{ pending_quantity }} 篇</span>
+                                </a>
+
+                                <br><br>
+
+                            <!-- Collapsable Card Example -->
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+                </div>
+            <!-- End of Main Content -->
+
+{% endblock %}
+
