@@ -4,10 +4,10 @@ from insert_que import insert_que
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 def daily_job_A():
-    main()
+    main("twseo")
 
 def daily_job_B():
-    insert_que()
+    insert_que("twseo")
 
 if __name__ == "__main__":
     scheduler = AsyncIOScheduler()  # 異步非阻塞式

@@ -15,7 +15,6 @@ class sqlTool:
         self.cur = {}
         self.conn = {}
         self.user_info = 'user_info'
-        self.article_table = 'twseo'
 
     @beartype
     def md5(self, string: str):
@@ -45,7 +44,7 @@ class sqlTool:
         self.conn[self.user_info] = conn
 
     @beartype
-    def open_article_connection(self):
+    def open_article_connection(self, table_name):
         db_name = './manager.db'
         timeout = 30000
         conn = sqlite3.connect(db_name,
@@ -56,13 +55,30 @@ class sqlTool:
         cur = conn.cursor()
 
         # 確認 table 是否存在
-        cur.execute(f'CREATE TABLE IF NOT EXISTS {self.article_table}'
+        cur.execute(f'CREATE TABLE IF NOT EXISTS {table_name}'
                     f'(id INTEGER PRIMARY KEY AUTOINCREMENT, '
                     f'title TEXT, content TEXT, create_time TEXT, state TEXT, md5_key TEXT)')
         conn.commit()
 
-        self.cur[self.article_table] = cur
-        self.conn[self.article_table] = conn
+        self.cur[table_name] = cur
+        self.conn[table_name] = conn
+
+    @beartype
+    def create_table(self, table_name: str):
+        db_name = './manager.db'
+        timeout = 30000
+        conn = sqlite3.connect(db_name,
+                               isolation_level=None,
+                               check_same_thread=False,
+                               timeout=timeout)
+
+        cur = conn.cursor()
+
+        # 確認 table 是否存在
+        cur.execute(f'CREATE TABLE IF NOT EXISTS {table_name}'
+                    f'(id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                    f'title TEXT, content TEXT, create_time TEXT, state TEXT, md5_key TEXT)')
+        conn.commit()
 
     # @beartype
     # def close_connection(self):
@@ -83,9 +99,9 @@ class sqlTool:
         # self.close_connection()
 
     @beartype
-    def insert_article(self, title: str, content: str):
+    def insert_article(self, table_name: str, title: str, content: str):
         md5_key = self.md5(title + content)
-        self.open_article_connection()
+        self.open_article_connection(table_name)
         df = pd.DataFrame({'title': [title],
                            'content': [content],
                            'create_time': [today_time()],
@@ -93,11 +109,11 @@ class sqlTool:
                            'state': ['0'],
                            })
 
-        df.to_sql(self.article_table, self.conn.get(self.article_table), if_exists='append', index=False)
+        df.to_sql(table_name, self.conn.get(table_name), if_exists='append', index=False)
         # self.close_connection()
 
     @beartype
-    def select_article(self, state: str):
+    def select_article(self, table_name, state: str):
 
         sql = '''
         SELECT * 
@@ -105,10 +121,10 @@ class sqlTool:
         WHERE `state` = {}
         LIMIT 10
         '''
-        sql = sql.format(self.article_table, state)
-        self.open_article_connection()
+        sql = sql.format(table_name, state)
+        self.open_article_connection(table_name)
 
-        df = pd.read_sql(sql, self.conn.get(self.article_table))
+        df = pd.read_sql(sql, self.conn.get(table_name))
         df_dict = df.to_dict('records')
 
         # self.close_connection()
@@ -116,7 +132,7 @@ class sqlTool:
         return df_dict
 
     @beartype
-    def crawler_select_article(self, md5_key: str):
+    def crawler_select_article(self, table_name: str, md5_key: str):
 
         sql = '''
         SELECT * 
@@ -124,10 +140,10 @@ class sqlTool:
         WHERE `md5_key` = "{}"
         LIMIT 10
         '''
-        sql = sql.format(self.article_table, md5_key)
-        self.open_article_connection()
+        sql = sql.format(table_name, md5_key)
+        self.open_article_connection(table_name)
 
-        df = pd.read_sql(sql, self.conn.get(self.article_table))
+        df = pd.read_sql(sql, self.conn.get(table_name))
         df_dict = df.to_dict('records')
 
         # self.close_connection()
@@ -135,7 +151,7 @@ class sqlTool:
         return df_dict
 
     @beartype
-    def select_latest_article(self):
+    def select_latest_article(self, table_name):
 
         sql = '''
         SELECT * 
@@ -143,10 +159,10 @@ class sqlTool:
         WHERE state = "0"
         LIMIT 10
         '''
-        sql = sql.format(self.article_table)
-        self.open_article_connection()
+        sql = sql.format(table_name)
+        self.open_article_connection(table_name)
 
-        df = pd.read_sql(sql, self.conn.get(self.article_table))
+        df = pd.read_sql(sql, self.conn.get(table_name))
         df_dict = df.to_dict('records')
 
         # self.close_connection()
@@ -154,28 +170,28 @@ class sqlTool:
         return df_dict
 
     @beartype
-    def update_article_state(self, state: str, md5_key: str):
+    def update_article_state(self, table_name: str, state: str, md5_key: str):
         sql = '''
         UPDATE {}
         SET `state` = "{}"
         WHERE `md5_key` = "{}"
         '''
-        sql = sql.format(self.article_table, state, md5_key)
-        self.open_article_connection()
-        self.cur.get(self.article_table).execute(sql)
-        self.conn.get(self.article_table).commit()
+        sql = sql.format(table_name, state, md5_key)
+        self.open_article_connection(table_name)
+        self.cur.get(table_name).execute(sql)
+        self.conn.get(table_name).commit()
 
     @beartype
-    def update_all_article_state(self):
+    def update_all_article_state(self, table_name):
         sql = '''
         UPDATE {}
         SET `state` = "0"
         WHERE `state` = "1"
         '''
-        sql = sql.format(self.article_table)
-        self.open_article_connection()
-        self.cur.get(self.article_table).execute(sql)
-        self.conn.get(self.article_table).commit()
+        sql = sql.format(table_name)
+        self.open_article_connection(table_name)
+        self.cur.get(table_name).execute(sql)
+        self.conn.get(table_name).commit()
 
     @beartype
     def select_user_info(self, username: str):
@@ -216,8 +232,9 @@ if __name__ == '__main__':
     password = '123qwe'
     title = '測試內容'
     content = '12345qwef'
+    table_name = ''
     # create_time = [today_time()]
     DB = sqlTool()
-    DB.open_article_connection()
-    df_dict = DB.select_article(state='0')
+    DB.open_article_connection(table_name)
+    df_dict = DB.select_article(table_name=table_name, state='0')
     # DB.insert_article(title, content)

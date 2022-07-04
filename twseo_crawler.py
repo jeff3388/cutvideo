@@ -30,7 +30,7 @@ def fetch_article_link():
     return sum(total_link, [])
 
 
-def main():
+def main(table_name):
     total_url = fetch_article_link()
 
     total_dict_ls = []
@@ -46,6 +46,6 @@ def main():
         title = article.get('title')
         content = article.get('content')
         md_key = md5(title + content)
-        result = db.crawler_select_article(md_key)
+        result = db.crawler_select_article(table_name, md_key)
         if bool(result) is False:
-            db.insert_article(title, content)
+            db.insert_article(table_name, title, content)

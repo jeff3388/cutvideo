@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify
 from flask import request, session, redirect, url_for
+from module.decorator_method import validate_json
 from datetime import timedelta
 from module.sqlite import sqlTool
 import os
@@ -98,7 +99,8 @@ def article():
         if request.method == 'POST':
             title = request.values.get('title')
             content = request.values.get('text_area')
-            db.insert_article(title, content)
+            table_name = request.values.get('table_name')
+            db.insert_article(table_name, title, content)
 
             return render_template('article.html')
         else:
@@ -111,7 +113,7 @@ def article_list():
     if 'username' in session:
 
         content_ls = []
-        result_ls = db.select_latest_article()
+        result_ls = db.select_latest_article(table_name)
         for i, result in enumerate(result_ls):
             title = result.get('title')
             content = result.get('content')
@@ -166,16 +168,32 @@ def status():
 
 
 @app.route('/update_all_article_state', methods=['POST'])
+@validate_json('auth', 'table_name')
 def update_all_article_state():
-    db.update_all_article_state()
+    auth = request.json.get('auth')
+    if auth != '7b354b2f9429e2b92ca5b8c0d12e22ef':
+        return jsonify({"result": "abort your request"})
+
+    table_name = request.json.get('table_name')
+    db.update_all_article_state(table_name)
 
     return jsonify({"result": "already reset all article"})
+
+
+@app.route('/create_table', methods=['POST'])
+@validate_json('auth')
+def create_table():
+    auth = request.json.get('auth')
+    if auth != '7b354b2f9429e2b92ca5b8c0d12e22ef':
+        return jsonify({"result": "abort your request"})
+
+    table_name = request.json.get('table_name')
+    db.create_table(table_name)
 
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
 
 
 if __name__ == '__main__':

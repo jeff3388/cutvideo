@@ -16,8 +16,8 @@ def append_deque():
     return jsonify({"result": "1"})
 
 
-@validate_json('auth')
 @app.route('/article_list_json', methods=['POST'])
+@validate_json('auth')
 def article_list_json():
     auth = request.json.get('auth')
     if auth != '7b354b2f9429e2b92ca5b8c0d12e22ef':
