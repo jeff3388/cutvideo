@@ -113,13 +113,15 @@ def article_list():
     if 'username' in session:
 
         content_ls = []
-        result_ls = db.select_latest_article(table_name)
-        for i, result in enumerate(result_ls):
-            title = result.get('title')
-            content = result.get('content')
+        if request.method == 'POST':
+            table_name = request.values.get('table_name')
+            result_ls = db.select_latest_article(table_name)
+            for i, result in enumerate(result_ls):
+                title = result.get('title')
+                content = result.get('content')
 
-            article_html_ls = article_ls.format(str(i), title, str(i), content)
-            content_ls += [article_html_ls]
+                article_html_ls = article_ls.format(str(i), title, str(i), content)
+                content_ls += [article_html_ls]
 
         return render_template('article_list.html', article_list="\n".join(content_ls))
     else:
