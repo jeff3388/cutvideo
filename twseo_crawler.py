@@ -41,7 +41,6 @@ def main(table_name):
         art_content = soup.find('div', attrs={'class': 'wp-container-7 entry-content wp-block-post-content'}).text
         total_dict_ls += [{'title': art_title, 'content': art_content}]
 
-
     for article in total_dict_ls:
         title = article.get('title')
         content = article.get('content')

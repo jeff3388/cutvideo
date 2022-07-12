@@ -1,0 +1,50 @@
+{% extends 'base_client.html' %}
+{% block content %}
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-2 text-gray-800">請輸入抖音文章內容</h1>
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+
+
+                                <form class="user" action="{{ url_for('submit_article') }}" method="post">
+                                    <!-- 文章標題 -->
+                                    <div class="form-group">
+                                            <input type="text" class="form-control form-control-user2"
+                                                   name="table_name" placeholder="username">
+                                    </div>
+                                    <div class="form-group">
+                                            <input type="text" class="form-control form-control-user2"
+                                                   name="title"
+                                                id="" placeholder="title">
+                                    </div>
+                                    <!-- 文章內容匡 -->
+                                    <div class="form-group">
+                                        <textarea name="content" style="font-size:15px;width:100%" rows="5"></textarea>
+
+                                    </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                                        <p> {{ result | safe }} </p>
+                                    <br>
+
+
+                            <!-- Collapsable Card Example -->
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+                </div>
+            <!-- End of Main Content -->
+
+{% endblock %}
+
