@@ -55,6 +55,21 @@
 
     </div>
 
+    <script type="text/javascript">
+    function loginData(){
+
+            let username = document.getElementById("exampleInputAccount");
+            let password = document.getElementById("exampleInputPassword");
+
+            // 先清除瀏覽器快取
+            localStorage.clear();
+
+            // 存入 token
+            localStorage.setItem('token', username.value);
+
+        }
+    </script>
+
     <!-- Bootstrap core JavaScript-->
     <script src="static/startbootstrap/vendor/jquery/jquery.min.js"></script>
     <script src="static/startbootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

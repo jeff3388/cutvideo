@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4" style="width:50%">
+                        <div class="card-header py-3">
+                            <h2>創建資料庫表單</h2>
+                            <br>
+
+                                 <!-- 搜尋按鈕 -->
+                                <form class="user" name="form">
+                                     <div class="form-group">
+                                            <input type="text" class="form-control form-control-user2"
+                                                   name="tableName"
+                                                id="tableName" placeholder="table Name">
+                                    </div>
+
+                                        <button type="submit" class="btn btn-primary" onclick="background_create_table()">Submit</button>
+                                    </form>
+
+                                    <br>
+                                    <br>
+                                    <div style="text-align:center; color:red ;">
+                                        <h3>{{ result }}</h3>
+                                    </div>
+
+                            <!-- Collapsable Card Example -->
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+
+{% endblock %}

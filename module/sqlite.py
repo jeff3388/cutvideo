@@ -193,7 +193,6 @@ class sqlTool:
         self.cur.get(table_name).execute(sql)
         self.conn.get(table_name).commit()
 
-    @beartype
     def select_user_info(self, username: str):
 
         sql = '''

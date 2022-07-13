@@ -395,6 +395,30 @@
         </div>
     </div>
 
+
+        <script type="text/javascript">
+        function submit_article(){
+            let title = document.form.title.value;
+            let content = document.form.content.value;
+
+            // 提取 token
+            let tableName = localStorage.getItem('token');
+            console.log(tableName);
+            $.ajax({
+                  type: "POST",
+                  contentType: "application/json; charset=utf-8",
+                  url: "/submit_article",
+                  data: JSON.stringify({tableName: tableName,
+                                        title: title,
+                                        content: content}),
+                  dataType: "json"
+
+             });
+
+        }
+
+        </script>
+
     <!-- Bootstrap core JavaScript-->
     <script src="static/startbootstrap/vendor/jquery/jquery.min.js"></script>
     <script src="static/startbootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

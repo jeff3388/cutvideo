@@ -38,7 +38,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                <div class="sidebar-brand-text mx-3">抖音管理後台</div>
             </a>
 
             <!-- Divider -->
@@ -72,6 +72,8 @@
 <!--                        <h6 class="collapse-header">Custom Components:</h6>-->
                         <a class="collapse-item" href="article">提交新文章</a>
                         <a class="collapse-item" href="article_list">最新文章列表</a>
+                        <a class="collapse-item" href="background_create_table">創建新資料庫表單</a>
+                        <a class="collapse-item" href="background_create_table">表單查詢</a>
 
                     </div>
                 </div>
@@ -423,6 +425,25 @@
             </div>
         </div>
     </div>
+        <script type="text/javascript">
+        function background_create_table(){
+            let tableName = document.form.tableName.value;
+
+            // 提取 token
+            let token = localStorage.getItem('token');
+
+            <!-- post json-->
+            $.ajax({
+                  type: "POST",
+                  contentType: "application/json; charset=utf-8",
+                  url: "/background_create_table",
+                  data: JSON.stringify({token: token,
+                                        tableName: tableName}),
+                  dataType: "json"
+             });
+
+        }
+        </script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="static/startbootstrap/vendor/jquery/jquery.min.js"></script>
