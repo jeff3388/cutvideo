@@ -151,9 +151,9 @@ def add_account():
 @app.route('/submit_article', methods=['POST'])
 def submit_article():
     if request.method == 'POST':
-        table_name = request.json.get('tableName')
-        title = request.json.get('title')
-        content = request.json.get('content')
+        table_name = request.values.get('tableName')
+        title = request.values.get('title')
+        content = request.values.get('content')
         db.insert_article(table_name, title, content)
 
         return redirect(url_for('article_client'))

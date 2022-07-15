@@ -9,7 +9,13 @@
                     <div class="card shadow mb-4" style="width:50%">
                         <div class="card-header py-3">
                                 <h2>請輸入抖音文章內容</h2>
-                                <form name="form" class="user">
+                                <form action="submit_article" name="form" class="user" method="post">
+
+                                    <div class="form-group">
+                                            <input type="text" class="form-control form-control-user2"
+                                                   name="tableName"
+                                                id="tableName" placeholder="table name">
+                                    </div>
                                     <!-- 文章標題 -->
                                     <div class="form-group">
                                             <input type="text" class="form-control form-control-user2"
@@ -18,10 +24,10 @@
                                     </div>
                                     <!-- 文章內容匡 -->
                                     <div class="form-group">
-                                        <textarea name="content" id="content" style="font-size:15px;width:100%" rows="10"></textarea>
+                                        <textarea name="content" id="content" style="font-size:15px;width:100%" placeholder="content" rows="10"></textarea>
 
                                     </div>
-                                        <button type="submit" class="btn btn-primary" onclick="submit_article()">Submit</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
                                         <p> </p>
                                     <br>
