@@ -2,8 +2,8 @@ from module.sqlite import sqlTool
 import requests
 
 
-def insert_que(table_name):
-    url = 'http://127.0.0.1:5501/append_deque'
+def insert_que(table_name, port):
+    url = f'http://127.0.0.1:{port}/append_deque'
     db = sqlTool()
     result_ls = db.select_latest_article(table_name)
     if bool(result_ls) is True:
