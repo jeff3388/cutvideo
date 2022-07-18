@@ -3,14 +3,18 @@ from twseo_crawler import main
 from insert_que import insert_que
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
+
 def daily_job_crawler_okmoney():
     main("okmoney")
+
 
 def daily_job_insert_que_okmoney():
     insert_que("okmoney", "6000")
 
+
 def daily_job_crawler_twseo():
     main("twseo")
+
 
 def daily_job_insert_que_twseo():
     insert_que("twseo", "5501")
